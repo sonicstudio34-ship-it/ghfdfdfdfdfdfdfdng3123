@@ -16,6 +16,10 @@ export const BoostSection = ({ user, onUpgrade, onOpenRank }: BoostSectionProps)
   const miningRateCost = gameLogic.getBoostCost("miningRate", user.boosts.miningRateLevel)
   const { rank, icon } = gameLogic.calculateRank(user.totalEarned)
 
+  // Calculate next level values properly
+  const nextMiningSpeed = `${(user.boosts.miningSpeedLevel + 1)}x`
+  const nextClaimTime = gameLogic.formatTime(Math.max(60, (user.minClaimTime || 1800) - 300))
+  const nextMiningRate = gameLogic.formatNumberPrecise((user.miningRate || 0.001) * 1.5)
   const boosts = [
     {
       id: "miningSpeed",
@@ -24,7 +28,7 @@ export const BoostSection = ({ user, onUpgrade, onOpenRank }: BoostSectionProps)
       icon: <Zap className="w-6 h-6" />,
       level: user.boosts.miningSpeedLevel,
       current: `${gameLogic.formatNumberPrecise(user.miningRate || 0.001)}/s`,
-      next: `${user.boosts.miningSpeedLevel + 1}x`,
+      next: nextMiningSpeed,
       cost: miningSpeedCost,
       onUpgrade: () => onUpgrade("miningSpeed"),
     },
@@ -34,8 +38,8 @@ export const BoostSection = ({ user, onUpgrade, onOpenRank }: BoostSectionProps)
       description: "Reduce minimum claim time",
       icon: <Clock className="w-6 h-6" />,
       level: user.boosts.claimTimeLevel,
-      current: `${gameLogic.formatTime(user.minClaimTime || 300)}`,
-      next: `${gameLogic.formatTime(Math.max(60, (user.minClaimTime || 300) - 30))}`,
+      current: `${gameLogic.formatTime(user.minClaimTime || 1800)}`,
+      next: nextClaimTime,
       cost: claimTimeCost,
       onUpgrade: () => onUpgrade("claimTime"),
     },
@@ -46,7 +50,7 @@ export const BoostSection = ({ user, onUpgrade, onOpenRank }: BoostSectionProps)
       icon: <TrendingUp className="w-6 h-6" />,
       level: user.boosts.miningRateLevel,
       current: `${gameLogic.formatNumberPrecise(user.miningRate || 0.001)}/s`,
-      next: `${gameLogic.formatNumberPrecise((user.miningRate || 0.001) * 1.5)}/s`,
+      next: `${nextMiningRate}/s`,
       cost: miningRateCost,
       onUpgrade: () => onUpgrade("miningRate"),
     },

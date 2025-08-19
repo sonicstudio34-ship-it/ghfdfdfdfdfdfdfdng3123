@@ -75,7 +75,7 @@ export const MissionSection = ({
           alt={mission.title}
           width={32}
           height={32}
-          className="w-8 h-8 rounded-lg object-cover"
+          className="w-6 h-6 rounded-lg object-cover"
         />
       )
     }
@@ -416,6 +416,17 @@ export const MissionSection = ({
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    {/* Always show Start Mission button for join_channel missions */}
+                    {selectedMissionData.type === "join_channel" && (
+                      <button
+                        onClick={() => handleStartMission(selectedMission)}
+                        className="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Join Channel
+                      </button>
+                    )}
+                    
                     {selectedMissionData.type === "promo_code" ? (
                       <button
                         onClick={() => handleOpenPromoModal(selectedMission)}
@@ -434,7 +445,7 @@ export const MissionSection = ({
                       </button>
                     )}
                     
-                    {selectedMissionData.url && (
+                    {selectedMissionData.url && selectedMissionData.type !== "join_channel" && (
                       <button
                         onClick={() => window.open(selectedMissionData.url, "_blank")}
                         className="w-full bg-gray-700/20 hover:bg-gray-700/40 text-gray-300 hover:text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 border border-gray-700/30 hover:border-gray-600/50 flex items-center justify-center gap-2"

@@ -149,7 +149,6 @@ export const FriendsSection = ({ user, onCopyReferralLink }: FriendsSectionProps
           </div>
           <div>
             <h3 className="text-sm font-bold text-white font-display">Referral Program</h3>
-            <p className="text-xs text-gray-400">Earn 15 UC per friend!</p>
             <p className="text-xs text-gray-400">Earn 200 DRX per friend!</p>
           </div>
         </div>
@@ -288,7 +287,6 @@ export const FriendsSection = ({ user, onCopyReferralLink }: FriendsSectionProps
                       <div className="font-semibold text-white truncate">{displayName}</div>
                       <div className="text-sm text-gray-400">{item.count} referrals</div>
                     </div>
-                    <div className="text-right font-bold text-green-400">{gameLogic.formatNumber(item.earned)} UC</div>
                     <div className="text-right font-bold text-green-400">{gameLogic.formatNumber(item.earned)} DRX</div>
                   </div>
                 )

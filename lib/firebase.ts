@@ -197,12 +197,12 @@ export const firebaseService = {
 
       const newReferralData = {
         count: (refData.count || 0) + 1,
-        totalUC: (refData.totalUC || 0) + 200, // Changed to 200 DRX
+        totalUC: (refData.totalUC || 0) + 200, // Keep as totalUC for compatibility but it's DRX
         referrals: {
           ...(refData.referrals || {}),
           [userId]: {
             date: new Date().toISOString(),
-            earned: 200, // Changed to 200 DRX
+            earned: 200, // DRX earned
             firstName: userData.firstName,
             lastName: userData.lastName || "",
             avatarUrl: userData.avatarUrl || "",
@@ -215,9 +215,9 @@ export const firebaseService = {
       // Update referrer's balance
       if (referrerData) {
         await update(ref(database, `users/${refId}`), {
-          balance: (referrerData.balance || 0) + 200, // Changed to 200 DRX
+          balance: (referrerData.balance || 0) + 200, // DRX balance
           referralCount: (referrerData.referralCount || 0) + 1,
-          totalEarned: (referrerData.totalEarned || 0) + 200, // Changed to 200 DRX
+          totalEarned: (referrerData.totalEarned || 0) + 200, // DRX earned
           xp: (referrerData.xp || 0) + 60, // Add 60 XP for referral
         })
       }
@@ -240,6 +240,7 @@ export const firebaseService = {
         id: newConversionRef.key,
         requestedAt: Date.now(),
         status: "pending",
+        packageImage: conversionData.packageImage || null,
       })
 
       return newConversionRef.key

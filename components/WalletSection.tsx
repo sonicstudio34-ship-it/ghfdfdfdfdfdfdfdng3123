@@ -80,6 +80,9 @@ export const WalletSection = ({ user, onConvert }: WalletSectionProps) => {
     }
 
     try {
+      const selectedPkg = selectedCategory.packages.find(p => p.id === selectedPackage)
+      if (!selectedPkg) return
+
       const result = await onConvert(selectedCategory.id, selectedPackage, requiredInfo)
       if (result.success) {
         toast({
@@ -333,7 +336,7 @@ export const WalletSection = ({ user, onConvert }: WalletSectionProps) => {
               <div className="space-y-4 mb-6">
                 {selectedCategory.requiredFields.map((field) => (
                   <div key={field.id}>
-                    <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    {conversion.packageImage && conversion.packageImage !== "null" ? (
                       {field.label} {field.required && <span className="text-red-400">*</span>}
                     </label>
                     <input
@@ -343,7 +346,7 @@ export const WalletSection = ({ user, onConvert }: WalletSectionProps) => {
                       placeholder={field.placeholder}
                       className="w-full bg-gray-800/50 border border-gray-700/50 focus:border-green-500 rounded-xl px-3 py-2 text-white placeholder-gray-400 focus:outline-none transition-all duration-200"
                     />
-                    {field.helpText && (
+                        🔄
                       <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>
                     )}
                   </div>

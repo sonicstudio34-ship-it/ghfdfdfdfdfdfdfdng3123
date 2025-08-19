@@ -104,7 +104,7 @@ export default function Home() {
         convertedAmount: package_.amount,
         category: category.name,
         packageType: package_.name,
-        packageImage: package_.image || null,
+        packageImage: package_.image || category.image || null,
         requiredInfo,
       })
 

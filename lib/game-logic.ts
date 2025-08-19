@@ -6,15 +6,15 @@ export const GAME_CONFIG = {
   BASE_MINING_RATE: 0.001, // DRX per second
   WELCOME_BONUS: 100, // DRX
   JACKPOT_COOLDOWN: 3600000, // 1 hour
-  MIN_CLAIM_TIME: 300, // 5 minutes minimum mining time (changed from 60 to 300)
+  MIN_CLAIM_TIME: 1800, // 30 minutes minimum mining time
   MAX_MINING_TIME: 86400, // 24 hours maximum mining time
-  DAILY_MINING_REWARD: 100, // DRX for 24h continuous mining
+  DAILY_MINING_REWARD: 100, // DRX for 30min continuous mining
   CRITICAL_CHANCE: 0.02,
   JACKPOT_CHANCE: 0.0005,
   MAX_LEVEL: 50,
   XP_PER_LEVEL: 100,
   DRX_TO_UC_RATE: 1, // 1 DRX = 1 UC (can be changed)
-  BASE_XP_REWARD: 30, // Base XP for 30 minutes of mining
+  BASE_XP_REWARD: 50, // Base XP for 30 minutes of mining
   REFERRAL_XP_BONUS: 60, // XP bonus for referrals
 }
 
@@ -114,8 +114,8 @@ export const gameLogic = {
     }
 
     const baseCost = baseCosts[boostType]
-    // Each level costs 2x more than the previous
-    return Math.floor(baseCost * Math.pow(2, currentLevel - 1))
+    // Each level costs 2x more than the previous, but start from level 1
+    return Math.floor(baseCost * Math.pow(2, Math.max(0, currentLevel - 1)))
   },
 
   formatNumber(num: number | undefined | null): string {
@@ -133,7 +133,10 @@ export const gameLogic = {
 
   formatNumberPrecise(num: number | undefined | null): string {
     const safeNum = typeof num === "number" ? num : 0
-    return safeNum.toFixed(8)
+    // Remove trailing zeros and unnecessary decimal places
+    if (safeNum === 0) return "0"
+    if (safeNum >= 1) return safeNum.toFixed(3).replace(/\.?0+$/, "")
+    return safeNum.toFixed(6).replace(/\.?0+$/, "")
   },
 
   formatTime(seconds: number): string {

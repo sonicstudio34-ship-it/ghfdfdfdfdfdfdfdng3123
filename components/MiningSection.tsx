@@ -24,7 +24,7 @@ export const MiningSection = ({ user, onStartMining, onClaimRewards, onOpenRank 
     if (user.isMining) {
       interval = setInterval(() => {
         const duration = gameLogic.getMiningDuration(user)
-        const minTime = user.minClaimTime || 300 // 5 minutes default
+        const minTime = user.minClaimTime || 1800 // 30 minutes default
         
         if (duration >= minTime) {
           setCanClaim(true)
@@ -109,9 +109,10 @@ export const MiningSection = ({ user, onStartMining, onClaimRewards, onOpenRank 
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            padding: "8px",
+            padding: "8px 8px 0 8px",
             minHeight: "100vh",
             justifyContent: "center",
+            transform: "translateY(-10%)", // Move everything up by 10%
           }}
         >
           <div

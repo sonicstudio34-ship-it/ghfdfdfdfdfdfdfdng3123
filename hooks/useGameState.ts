@@ -38,7 +38,7 @@ const defaultUserData: User = {
   lastClaimTime: 0,
   pendingRewards: 0,
   miningRate: GAME_CONFIG.BASE_MINING_RATE,
-  minClaimTime: GAME_CONFIG.MIN_CLAIM_TIME,
+  minClaimTime: GAME_CONFIG.MIN_CLAIM_TIME, // 30 minutes
   settings: {
     sound: true,
     vibration: true,
@@ -232,13 +232,16 @@ export const useGameState = () => {
 
       switch (boostType) {
         case "miningSpeed":
-          updates.miningRate = (user.miningRate || GAME_CONFIG.BASE_MINING_RATE) * 1.2
+          // Mining speed affects the rate multiplier
+          updates.miningRate = GAME_CONFIG.BASE_MINING_RATE * Math.pow(1.2, currentLevel)
           break
         case "claimTime":
-          updates.minClaimTime = Math.max(60, (user.minClaimTime || GAME_CONFIG.MIN_CLAIM_TIME) - 30)
+          // Reduce claim time by 5 minutes per level, minimum 5 minutes
+          updates.minClaimTime = Math.max(300, GAME_CONFIG.MIN_CLAIM_TIME - (300 * (currentLevel - 1)))
           break
         case "miningRate":
-          updates.miningRate = (user.miningRate || GAME_CONFIG.BASE_MINING_RATE) * 1.5
+          // Mining rate boost increases base rate
+          updates.miningRate = GAME_CONFIG.BASE_MINING_RATE * Math.pow(1.5, currentLevel)
           break
       }
 
@@ -273,27 +276,8 @@ export const useGameState = () => {
 
   // Mining interval effect
   useEffect(() => {
-    let miningInterval: NodeJS.Timeout | undefined
-
-    if (user.isMining && gameState.dataLoaded) {
-      miningInterval = setInterval(() => {
-        setUser((prev) => {
-          if (!prev.isMining) return prev
-          
-          const pendingRewards = gameLogic.calculatePendingRewards(prev)
-          return {
-            ...prev,
-            pendingRewards,
-          }
-        })
-      }, 1000) // Update every second
-    }
-
-    return () => {
-      if (miningInterval) {
-        clearInterval(miningInterval)
-      }
-    }
+    // No real-time interval needed - mining works offline
+    // Rewards are calculated based on time difference when user returns
   }, [user.isMining, gameState.dataLoaded])
 
   // Initialize on mount

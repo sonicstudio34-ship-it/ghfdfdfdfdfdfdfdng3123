@@ -51,7 +51,11 @@ export const RankModal = ({ isOpen, onClose, user }: RankModalProps) => {
           } else {
             const aLevel = gameLogic.calculateLevel(a.xp || 0).level
             const bLevel = gameLogic.calculateLevel(b.xp || 0).level
-            return bLevel - aLevel
+            // Sort by level first, then by XP if levels are equal
+            if (bLevel !== aLevel) {
+              return bLevel - aLevel
+            }
+            return (b.xp || 0) - (a.xp || 0)
           }
         })
         .map((userData, index) => ({
