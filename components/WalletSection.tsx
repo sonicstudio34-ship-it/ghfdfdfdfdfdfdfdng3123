@@ -336,7 +336,7 @@ export const WalletSection = ({ user, onConvert }: WalletSectionProps) => {
               <div className="space-y-4 mb-6">
                 {selectedCategory.requiredFields.map((field) => (
                   <div key={field.id}>
-                    {conversion.packageImage && conversion.packageImage !== "null" ? (
+                    <label className="block text-gray-300 text-sm mb-1">
                       {field.label} {field.required && <span className="text-red-400">*</span>}
                     </label>
                     <input
@@ -346,7 +346,7 @@ export const WalletSection = ({ user, onConvert }: WalletSectionProps) => {
                       placeholder={field.placeholder}
                       className="w-full bg-gray-800/50 border border-gray-700/50 focus:border-green-500 rounded-xl px-3 py-2 text-white placeholder-gray-400 focus:outline-none transition-all duration-200"
                     />
-                        🔄
+                    {field.helpText && (
                       <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>
                     )}
                   </div>
